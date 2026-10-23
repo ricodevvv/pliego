@@ -63,8 +63,27 @@ export function encryptPdf(input: Uint8Array, password: string) {
   return runQpdf(input, ["--encrypt", password, password, "256", "--"]);
 }
 
-export function decryptPdf(input: Uint8Array, password: string) {
-  return runQpdf(input, [`--password=${password}`, "--decrypt"]);
+async function isEncrypted(input: Uint8Array) {
+  const { PDFDocument, EncryptedPDFError } = await import("pdf-lib");
+  try {
+    await PDFDocument.load(input, { updateMetadata: false });
+    return false;
+  } catch (error) {
+    return error instanceof EncryptedPDFError || /encrypted/i.test(String(error));
+  }
+}
+
+/**
+ * Removes a PDF's password. qpdf's own messages can't always be read from the page, so a failed
+ * run on an encrypted file is reported as a wrong password.
+ */
+export async function decryptPdf(input: Uint8Array, password: string) {
+  try {
+    return await runQpdf(input, [`--password=${password}`, "--decrypt"]);
+  } catch (error) {
+    if (error instanceof ToolError && error.code === "invalid" && (await isEncrypted(input))) throw new ToolError("password");
+    throw error;
+  }
 }
 
 export function optimizePdf(input: Uint8Array) {
