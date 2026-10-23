@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const OFFICE_TOOLS = "word-to-pdf|excel-to-pdf|powerpoint-to-pdf|pdf-to-word";
+const OFFICE_TOOLS = "word-to-pdf|excel-to-pdf|powerpoint-to-pdf";
 
 const nextConfig: NextConfig = {
   turbopack: {
@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
         source: "/vendor/:path*",
         headers: [
           { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
