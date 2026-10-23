@@ -1,9 +1,17 @@
-export function Logo({ className = "size-6" }: { className?: string }) {
+import { cn } from "@/lib/utils";
+
+/**
+ * The Pliego mark: a sheet whose folded flap makes the bowl of a P.
+ */
+export function Logo({ className = "size-6", intro = false }: { className?: string; intro?: boolean }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <rect width="24" height="24" rx="6" className="fill-foreground" />
-      <path d="M8 5.5h5.5L17 9v9.5H8z" className="fill-background" />
-      <path d="M13.5 5.5V9H17" className="fill-foreground/25" />
+    <svg viewBox="0 0 32 32" className={cn("logo-mark", intro && "logo-intro", className)} aria-hidden="true">
+      <rect width="32" height="32" rx="8.5" className="fill-foreground" />
+      <path d="M9 6.5h8.5v19H10a1 1 0 0 1-1-1z" className="fill-background" />
+      <g className="logo-flap">
+        <path d="M17.5 6.5 24.6 8.6a.6.6 0 0 1 .4.6v7.9a.6.6 0 0 1-.45.58L17.5 19.5z" fill="#ff5a1f" />
+        <path d="M17.5 6.5 19.4 7.06v11.9l-1.9.54z" fill="#000" opacity=".22" />
+      </g>
     </svg>
   );
 }
