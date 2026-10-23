@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Caveat, Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
+import { RevealObserver } from "@/components/reveal";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getDictionary, isLocale, LOCALES } from "@/lib/i18n";
@@ -36,7 +37,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   if (!isLocale(lang)) notFound();
   return (
     <html lang={lang === "es" ? "es-MX" : "en"} suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${signature.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body className="flex min-h-dvh flex-col">
+        <RevealObserver />
         <ThemeProvider>
           <SiteHeader locale={lang} />
           <main className="flex-1">{children}</main>

@@ -1,6 +1,8 @@
 import { InfinityIcon, LockIcon, ShieldCheckIcon, WifiOffIcon } from "lucide-react";
 import { notFound } from "next/navigation";
+import { FloatingSheets } from "@/components/floating-sheets";
 import { GithubIcon } from "@/components/github-link";
+import { Logo } from "@/components/logo";
 import { ToolGrid } from "@/components/tool-grid";
 import { getDictionary, GITHUB_URL, isLocale } from "@/lib/i18n";
 
@@ -14,20 +16,23 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <section className="relative overflow-hidden border-b">
         <div className="bg-grid pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto max-w-6xl px-4 pt-16 pb-14 text-center sm:px-6 sm:pt-24">
+        <FloatingSheets />
+        <div className="relative mx-auto max-w-6xl px-4 pt-14 pb-14 text-center sm:px-6 sm:pt-20">
+          <Logo intro className="pop mx-auto mb-7 size-16 drop-shadow-[0_12px_24px_rgb(255_90_31/25%)]" />
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="rise inline-flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            style={{ "--delay": "150ms" } as React.CSSProperties}
           >
             <GithubIcon className="size-3.5" />
             {t.home.badge}
           </a>
-          <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-balance sm:text-6xl lg:text-7xl">
-            {t.home.title} <span className="text-muted-foreground">{t.home.titleAccent}</span>
+          <h1 style={{ "--delay": "250ms" } as React.CSSProperties} className="rise mx-auto mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-balance sm:text-6xl lg:text-7xl">
+            {t.home.title} <span className="bg-gradient-to-r from-muted-foreground via-brand to-muted-foreground bg-clip-text text-transparent">{t.home.titleAccent}</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-muted-foreground">{t.home.subtitle}</p>
+          <p style={{ "--delay": "380ms" } as React.CSSProperties} className="rise mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-pretty text-muted-foreground">{t.home.subtitle}</p>
         </div>
       </section>
 
@@ -40,8 +45,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           {t.home.pillars.map((pillar, index) => {
             const Icon = PILLAR_ICONS[index];
             return (
-              <div key={pillar.title} className="p-4">
-                <Icon className="size-5" />
+              <div key={pillar.title} data-reveal style={{ "--delay": `${index * 90}ms` } as React.CSSProperties} className="p-4">
+                <div className="grid size-10 place-items-center rounded-lg bg-brand-soft text-brand">
+                  <Icon className="size-5" />
+                </div>
                 <h3 className="mt-3 font-semibold tracking-tight">{pillar.title}</h3>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{pillar.text}</p>
               </div>
@@ -51,7 +58,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       </section>
 
       <section className="border-t">
-        <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
+        <div data-reveal className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
           <h2 className="text-3xl font-semibold tracking-[-0.04em]">{t.home.whyTitle}</h2>
           <p className="mt-4 text-lg leading-relaxed text-pretty text-muted-foreground">{t.home.whyText}</p>
         </div>

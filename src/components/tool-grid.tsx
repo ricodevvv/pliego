@@ -20,7 +20,7 @@ export function ToolGrid() {
 
   return (
     <div>
-      <label className="mx-auto flex h-12 max-w-md items-center gap-3 rounded-xl border bg-background px-4 shadow-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/30">
+      <label style={{ "--delay": "480ms" } as React.CSSProperties} className="rise mx-auto flex h-12 max-w-md items-center gap-3 rounded-xl border bg-background px-4 shadow-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/30">
         <SearchIcon className="size-4 text-muted-foreground" />
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.home.filter} aria-label={t.home.filter} className="h-full flex-1 bg-transparent outline-none" />
       </label>
@@ -30,15 +30,17 @@ export function ToolGrid() {
           if (!tools.length) return null;
           return (
             <section key={category}>
-              <h2 className="mb-4 text-sm font-medium text-muted-foreground">{t.categories[category]}</h2>
+              <h2 data-reveal className="mb-4 text-sm font-medium text-muted-foreground">{t.categories[category]}</h2>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {tools.map((tool) => (
+                {tools.map((tool, index) => (
                   <Link
                     key={tool.slug}
                     href={`/${locale}/${tool.slug}`}
-                    className="group flex flex-col gap-3 rounded-xl border bg-background p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-[0_8px_24px_-12px_rgb(0_0_0/18%)]"
+                    data-reveal
+                    style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
+                    className="group flex flex-col gap-3 rounded-xl border bg-background p-5 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_12px_32px_-14px_rgb(255_90_31/35%)] transition-all duration-300"
                   >
-                    <div className="grid size-10 place-items-center rounded-lg border bg-muted/50 transition-colors group-hover:bg-foreground group-hover:text-background">
+                    <div className="grid size-10 place-items-center rounded-lg border bg-muted/50 transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
                       <ToolIcon name={tool.icon} className="size-5" />
                     </div>
                     <div>

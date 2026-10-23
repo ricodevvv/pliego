@@ -28,13 +28,13 @@ export default async function ToolPage({ params }: PageProps<"/[lang]/[tool]">) 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
       <div className="flex flex-col items-center text-center">
-        <div className="grid size-12 place-items-center rounded-xl border bg-muted/50">
+        <div className="pop grid size-12 place-items-center rounded-xl bg-brand text-white shadow-[0_10px_24px_-8px_rgb(255_90_31/55%)]">
           <ToolIcon name={tool.icon} className="size-6" />
         </div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">{tool.title[lang]}</h1>
-        <p className="mt-3 max-w-xl text-lg text-pretty text-muted-foreground">{tool.description[lang]}</p>
+        <h1 style={{ "--delay": "100ms" } as React.CSSProperties} className="rise mt-5 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">{tool.title[lang]}</h1>
+        <p style={{ "--delay": "180ms" } as React.CSSProperties} className="rise mt-3 max-w-xl text-lg text-pretty text-muted-foreground">{tool.description[lang]}</p>
       </div>
-      <div className="mt-10">
+      <div className="rise mt-10" style={{ "--delay": "260ms" } as React.CSSProperties}>
         <ToolLoader slug={tool.slug} />
       </div>
       {related.length > 0 && (
@@ -42,7 +42,7 @@ export default async function ToolPage({ params }: PageProps<"/[lang]/[tool]">) 
           <h2 className="text-sm font-medium text-muted-foreground">{t.categories[tool.category]}</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {related.map((other) => (
-              <Link key={other.slug} href={`/${lang}/${other.slug}`} className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors hover:bg-accent">
+              <Link key={other.slug} href={`/${lang}/${other.slug}`} className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:bg-brand-soft">
                 <ToolIcon name={other.icon} className="size-3.5 text-muted-foreground" />
                 {other.title[lang]}
               </Link>

@@ -28,6 +28,8 @@
   --color-success-soft: var(--success-soft);
   --color-danger-soft: var(--danger-soft);
   --color-link: var(--link);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
@@ -75,6 +77,8 @@
   --success-soft: #ecfdf3;
   --danger-soft: #fff0f0;
   --link: #0068d6;
+  --brand: #ff5a1f;
+  --brand-soft: rgb(255 90 31 / 10%);
   --grid: rgb(0 0 0 / 5%);
   --chart-1: #e5e5e5;
   --chart-2: #a3a3a3;
@@ -122,6 +126,8 @@
   --success-soft: rgb(99 193 116 / 10%);
   --danger-soft: rgb(255 97 102 / 10%);
   --link: #52a8ff;
+  --brand: #ff6a33;
+  --brand-soft: rgb(255 106 51 / 14%);
   --grid: rgb(255 255 255 / 6%);
   --sidebar: #0a0a0a;
   --sidebar-foreground: #ededed;
@@ -189,4 +195,159 @@
     linear-gradient(-45deg, transparent 75%, var(--muted) 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+.logo-flap {
+  transform-box: view-box;
+  transform-origin: 17.5px 13px;
+}
+.logo-intro .logo-flap {
+  animation: unfold 0.9s 0.15s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+a:hover > .logo-mark .logo-flap,
+.logo-mark:hover .logo-flap {
+  animation: unfold 0.7s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+@keyframes unfold {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--turn, 0deg));
+  }
+  50% {
+    transform: translateY(-18px) rotate(calc(var(--turn, 0deg) + 4deg));
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.pop {
+  animation: pop 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.js [data-reveal]:not(.in) {
+  opacity: 0;
+}
+.js [data-reveal].in {
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.sheet {
+  animation: drift var(--speed, 9s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.dropzone:hover .dropzone-icon,
+.dropzone[data-over="true"] .dropzone-icon {
+  animation: nudge 0.9s ease-in-out infinite;
+}
+
+.progress-shine {
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.check-ring {
+  animation: ripple 1.2s 0.2s ease-out both;
+}
+
+.check-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw 0.45s 0.25s ease-out forwards;
+}
+
+.thumb {
+  animation: rise 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js [data-reveal]:not(.in) {
+    opacity: 1;
+  }
+  .check-path {
+    stroke-dashoffset: 0;
+  }
 }

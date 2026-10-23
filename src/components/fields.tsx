@@ -45,7 +45,7 @@ export function Choice<T extends string>({
             type="button"
             aria-pressed={value === option.value}
             onClick={() => onChange(option.value)}
-            className="flex min-w-0 flex-1 flex-col items-start rounded-lg border px-3 py-2 text-left text-sm transition-colors hover:bg-accent aria-pressed:border-foreground aria-pressed:bg-accent"
+            className="flex min-w-0 flex-1 flex-col items-start rounded-lg border px-3 py-2 text-left text-sm transition-all duration-200 hover:bg-accent active:scale-[0.98] aria-pressed:border-brand aria-pressed:bg-brand-soft aria-pressed:shadow-[inset_0_0_0_1px_var(--brand)]"
           >
             <span className="font-medium whitespace-nowrap">{option.label}</span>
             {option.hint && <span className="text-xs text-muted-foreground">{option.hint}</span>}
@@ -79,7 +79,7 @@ export function Range({
         {label}
         <span className="font-normal text-muted-foreground tabular-nums">{format(value)}</span>
       </span>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="accent-foreground" />
+      <input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="accent-brand" />
     </label>
   );
 }

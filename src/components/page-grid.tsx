@@ -98,7 +98,7 @@ function PageCard({
         {...attributes}
         {...listeners}
         className={cn(
-          "relative grid aspect-square place-items-center overflow-hidden rounded-lg border bg-muted/40 p-3",
+          "relative grid aspect-square place-items-center overflow-hidden rounded-lg border bg-muted/40 p-3 transition-all duration-200 hover:border-brand/50",
           sortable && "cursor-grab touch-none active:cursor-grabbing",
           page.deleted && "opacity-30",
         )}
@@ -109,7 +109,7 @@ function PageCard({
             src={thumb}
             alt=""
             draggable={false}
-            className="max-h-full max-w-full shadow-sm ring-1 ring-black/5 transition-transform duration-200"
+            className="thumb max-h-full max-w-full shadow-sm ring-1 ring-black/5 transition-transform duration-300"
             style={{ transform: `rotate(${page.rotation}deg)` }}
           />
         ) : (

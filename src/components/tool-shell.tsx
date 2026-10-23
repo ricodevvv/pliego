@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon, DownloadIcon, FileIcon, LockIcon, PlusIcon, RotateCcwIcon, XIcon } from "lucide-react";
+import { DownloadIcon, FileIcon, LockIcon, PlusIcon, RotateCcwIcon, UploadIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { download, formatBytes, sizeOf, toBlob, ToolError, zipOutputs, type Output, type Report } from "@/lib/files";
@@ -59,10 +59,11 @@ export function Dropzone({ accept, multiple, onFiles, compact }: { accept: strin
         setOver(false);
         pick(event.dataTransfer.files);
       }}
+      data-over={over}
       className={cn(
-        "flex flex-col items-center justify-center rounded-xl border border-dashed text-center transition-colors",
-        compact ? "gap-2 p-4" : "gap-3 px-6 py-16 sm:py-20",
-        over ? "border-foreground bg-accent" : "bg-muted/30",
+        "dropzone flex flex-col items-center justify-center rounded-xl border-2 border-dashed text-center transition-all duration-300",
+        compact ? "gap-2 p-4" : "gap-3 px-6 py-14 sm:py-16",
+        over ? "scale-[1.01] border-brand bg-brand-soft" : "bg-muted/30 hover:border-foreground/25",
       )}
     >
       <input
@@ -83,6 +84,9 @@ export function Dropzone({ accept, multiple, onFiles, compact }: { accept: strin
         </Button>
       ) : (
         <>
+          <div className="dropzone-icon mb-2 grid size-14 place-items-center rounded-2xl bg-brand text-white shadow-[0_10px_24px_-8px_rgb(255_90_31/55%)]">
+            <UploadIcon className="size-6" />
+          </div>
           <Button size="lg" className="h-12 px-6 text-base" onClick={() => input.current?.click()}>
             {multiple ? t.tool.choose : t.tool.chooseOne}
           </Button>
@@ -107,7 +111,7 @@ export function Dropzone({ accept, multiple, onFiles, compact }: { accept: strin
 export function FileRow({ file, onRemove, handle }: { file: File; onRemove?: () => void; handle?: React.ReactNode }) {
   const t = useDictionary();
   return (
-    <div className="flex items-center gap-3 rounded-lg border bg-background px-3 py-2.5">
+    <div className="rise flex items-center gap-3 rounded-lg border bg-background px-3 py-2.5">
       {handle}
       <FileIcon className="size-4 shrink-0 text-muted-foreground" />
       <span className="min-w-0 flex-1 truncate text-sm">{file.name}</span>
@@ -163,14 +167,21 @@ export function ToolShell({ accept, multiple, run, canRun = true, runLabel, hide
     const single = result.outputs.length === 1 ? result.outputs[0] : undefined;
     const smaller = result.before !== undefined ? 1 - total / result.before : undefined;
     return (
-      <div className="flex flex-col items-center gap-6 rounded-xl border bg-background px-6 py-12 text-center">
-        <div className="grid size-12 place-items-center rounded-full bg-success-soft text-success">
-          <CheckIcon className="size-6" />
+      <div className="rise flex flex-col items-center gap-6 rounded-xl border bg-background px-6 py-12 text-center">
+        <div className="relative grid size-14 place-items-center">
+          <span className="check-ring absolute inset-0 rounded-full bg-success/40" />
+          <span className="pop relative grid size-14 place-items-center rounded-full bg-success text-white">
+            <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+              <path className="check-path" d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+          </span>
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">{t.tool.done}</h2>
+        <h2 className="pop text-2xl font-semibold tracking-tight" style={{ "--delay": "150ms" } as React.CSSProperties}>
+          {t.tool.done}
+        </h2>
         {result.before !== undefined && smaller !== undefined && (
           smaller > 0.01 ? (
-            <div className="flex items-center gap-3 text-sm">
+            <div className="pop flex items-center gap-3 text-sm" style={{ "--delay": "250ms" } as React.CSSProperties}>
               <span className="text-muted-foreground line-through">{formatBytes(result.before)}</span>
               <span className="font-medium">{formatBytes(total)}</span>
               <span className="rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success">
@@ -201,7 +212,7 @@ export function ToolShell({ accept, multiple, run, canRun = true, runLabel, hide
         {!single && (
           <ul className="flex w-full max-w-md flex-col gap-1.5 text-left">
             {result.outputs.map((output, index) => (
-              <li key={index}>
+              <li key={index} className="rise" style={{ "--delay": `${200 + index * 40}ms` } as React.CSSProperties}>
                 <button
                   type="button"
                   onClick={() => download(toBlob(output), output.name)}
@@ -257,7 +268,9 @@ export function ToolShell({ accept, multiple, run, canRun = true, runLabel, hide
         {busy ? (
           <div className="flex flex-1 items-center gap-3 px-1">
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-foreground transition-[width] duration-300" style={{ width: `${Math.max(3, progress.value * 100)}%` }} />
+              <div className="relative h-full overflow-hidden rounded-full bg-brand transition-[width] duration-300" style={{ width: `${Math.max(3, progress.value * 100)}%` }}>
+                <span className="progress-shine absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+              </div>
             </div>
             <span className="w-12 text-right text-sm text-muted-foreground tabular-nums">{Math.round(progress.value * 100)}%</span>
           </div>
