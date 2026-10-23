@@ -41,10 +41,17 @@ export async function runQpdf(input: Uint8Array, args: string[]) {
   });
   qpdf.FS.writeFile("/input.pdf", input);
   let code: number;
+  const consoleError = console.error;
+  const consoleWarn = console.warn;
+  console.error = console.warn = (...line: unknown[]) => errors.push(line.join(" "));
   try {
     code = qpdf.callMain(["/input.pdf", ...args, "/output.pdf"]);
   } catch (error) {
     code = typeof (error as { status?: number }).status === "number" ? (error as { status: number }).status : 2;
+    errors.push(String(error));
+  } finally {
+    console.error = consoleError;
+    console.warn = consoleWarn;
   }
   const log = errors.join("\n");
   if (/invalid password/i.test(log)) throw new ToolError("password", log);
