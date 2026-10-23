@@ -21,7 +21,6 @@ const COMPONENTS: Record<string, React.ComponentType<{ tool: Tool }>> = {
   "excel-to-pdf": dynamic(() => import("@/components/tools/office"), { ssr: false, loading: Loading }),
   "powerpoint-to-pdf": dynamic(() => import("@/components/tools/office"), { ssr: false, loading: Loading }),
   "pdf-to-images": dynamic(() => import("@/components/tools/pdf-to-images"), { ssr: false, loading: Loading }),
-  "pdf-to-word": dynamic(() => import("@/components/tools/office"), { ssr: false, loading: Loading }),
   "extract-text": dynamic(() => import("@/components/tools/extract-text"), { ssr: false, loading: Loading }),
   "page-numbers": dynamic(() => import("@/components/tools/page-numbers"), { ssr: false, loading: Loading }),
   watermark: dynamic(() => import("@/components/tools/watermark"), { ssr: false, loading: Loading }),

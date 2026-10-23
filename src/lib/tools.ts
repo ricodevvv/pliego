@@ -132,17 +132,6 @@ export const TOOLS: Tool[] = [
     keywords: "jpg png jpeg convert convertir",
   },
   {
-    slug: "pdf-to-word",
-    category: "fromPdf",
-    icon: "file-pen",
-    accept: PDF,
-    multiple: false,
-    office: true,
-    title: { en: "PDF to Word", es: "PDF a Word" },
-    description: { en: "Turn a PDF into an editable Word document.", es: "Convierte un PDF en un documento de Word editable." },
-    keywords: "docx editable editar",
-  },
-  {
     slug: "extract-text",
     category: "fromPdf",
     icon: "text-cursor-input",
