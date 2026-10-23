@@ -44,7 +44,7 @@ export default function Office({ tool }: { tool: Tool }) {
       }}
     >
       {() => (
-        <p className="rounded-xl border bg-muted/40 px-5 py-4 text-sm text-muted-foreground">
+        <p className="rounded-2xl bg-cell px-5 py-4 text-[15px] text-muted-foreground">
           {t.options.officeHint} {toWord && t.options.pdfToWordHint}
         </p>
       )}

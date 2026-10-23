@@ -3,24 +3,24 @@
 import { cn } from "@/lib/utils";
 
 export const inputClass =
-  "h-10 w-full rounded-lg border bg-background px-3 text-sm outline-none transition-shadow focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30";
+  "h-11 w-full rounded-[10px] bg-fill px-3 text-[17px] outline-none transition-shadow placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-brand/50";
 
 export function Field({ label, hint, children, className }: { label: string; hint?: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={cn("flex flex-col gap-1.5", className)}>
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-[13px] text-muted-foreground">{label}</span>
       {children}
-      {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
+      {hint && <span className="text-[13px] leading-snug text-muted-foreground">{hint}</span>}
     </label>
   );
 }
 
 export function Options({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-5 rounded-xl border bg-background p-5 sm:grid-cols-2">{children}</div>;
+  return <div className="grid gap-5 rounded-2xl bg-cell p-5 sm:grid-cols-2">{children}</div>;
 }
 
 /**
- * A row of mutually exclusive choices, like a segmented control.
+ * An iOS-style segmented control. When options carry a hint, the selected one's hint shows below.
  */
 export function Choice<T extends string>({
   label,
@@ -35,23 +35,26 @@ export function Choice<T extends string>({
   options: { value: T; label: string; hint?: string }[];
   className?: string;
 }) {
+  const selected = options.find((option) => option.value === value);
   return (
     <fieldset className={cn("flex flex-col gap-1.5", className)}>
-      <legend className="mb-1.5 text-sm font-medium">{label}</legend>
-      <div className="flex flex-wrap gap-2">
+      <legend className="mb-1.5 text-[13px] text-muted-foreground">{label}</legend>
+      <div role="radiogroup" className="flex rounded-[9px] bg-fill p-0.5">
         {options.map((option) => (
           <button
             key={option.value}
             type="button"
+            role="radio"
+            aria-checked={value === option.value}
             aria-pressed={value === option.value}
             onClick={() => onChange(option.value)}
-            className="flex min-w-0 flex-1 flex-col items-start rounded-lg border px-3 py-2 text-left text-sm transition-all duration-200 hover:bg-accent active:scale-[0.98] aria-pressed:border-brand aria-pressed:bg-brand-soft aria-pressed:shadow-[inset_0_0_0_1px_var(--brand)]"
+            className="min-w-0 flex-1 truncate rounded-[7px] px-2 py-1.5 text-[13px] font-medium transition-all duration-200 aria-checked:bg-cell aria-checked:shadow-[0_3px_8px_rgb(0_0_0/12%),0_3px_1px_rgb(0_0_0/4%)]"
           >
-            <span className="font-medium whitespace-nowrap">{option.label}</span>
-            {option.hint && <span className="text-xs text-muted-foreground">{option.hint}</span>}
+            {option.label}
           </button>
         ))}
       </div>
+      {selected?.hint && <span className="px-1 text-[13px] text-muted-foreground">{selected.hint}</span>}
     </fieldset>
   );
 }
@@ -75,9 +78,9 @@ export function Range({
 }) {
   return (
     <label className="flex flex-col gap-2">
-      <span className="flex justify-between text-sm font-medium">
+      <span className="flex justify-between text-[13px] text-muted-foreground">
         {label}
-        <span className="font-normal text-muted-foreground tabular-nums">{format(value)}</span>
+        <span className="tabular-nums">{format(value)}</span>
       </span>
       <input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} className="accent-brand" />
     </label>

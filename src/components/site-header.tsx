@@ -7,9 +7,9 @@ import type { Locale } from "@/lib/i18n";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
-        <Link href={`/${locale}`} className="flex items-center gap-2 text-[15px] font-semibold tracking-tight">
+    <header className="material-bar sticky top-0 z-40 border-b-[0.5px]">
+      <div className="mx-auto flex h-12 max-w-5xl items-center gap-3 px-4">
+        <Link href={`/${locale}`} className="flex items-center gap-2 text-[17px] font-semibold tracking-[-0.02em]">
           <Logo />
           Pliego
         </Link>

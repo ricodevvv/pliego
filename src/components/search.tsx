@@ -30,11 +30,11 @@ export function Search() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex h-8 items-center gap-2 rounded-md border bg-muted px-2 text-sm whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:w-56 sm:px-2.5"
+        className="spring flex h-8 items-center gap-2 rounded-[10px] bg-fill px-2 text-[15px] whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:w-56 sm:px-2.5"
       >
         <SearchIcon className="size-4" />
         <span className="hidden flex-1 truncate text-left sm:inline">{t.nav.search}</span>
-        <kbd className="hidden rounded border bg-background px-1.5 font-mono text-[10px] sm:inline">⌘K</kbd>
+        <kbd className="hidden font-sans text-[13px] text-tertiary sm:inline">⌘K</kbd>
       </button>
       <CommandDialog open={open} onOpenChange={setOpen} title={t.nav.search} description={t.nav.search}>
         <CommandInput placeholder={t.nav.search} />

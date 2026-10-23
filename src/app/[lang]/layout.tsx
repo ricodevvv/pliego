@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { RevealObserver } from "@/components/reveal";
@@ -8,8 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { getDictionary, isLocale, LOCALES } from "@/lib/i18n";
 import "../globals.css";
 
-const sans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const signature = Caveat({ variable: "--font-signature", subsets: ["latin"], weight: "600" });
 
 export function generateStaticParams() {
@@ -36,7 +35,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   return (
-    <html lang={lang === "es" ? "es-MX" : "en"} suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${signature.variable}`}>
+    <html lang={lang === "es" ? "es-MX" : "en"} suppressHydrationWarning className={`${inter.variable} ${signature.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>

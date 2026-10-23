@@ -4,7 +4,6 @@ import { RotateCcwIcon, RotateCwIcon } from "lucide-react";
 import { useState } from "react";
 import { PageGrid, type GridPage } from "@/components/page-grid";
 import { ToolShell } from "@/components/tool-shell";
-import { Button } from "@/components/ui/button";
 import { baseName, readBytes } from "@/lib/files";
 import { rebuildPdf } from "@/lib/pdf/pages";
 import type { Tool } from "@/lib/tools";
@@ -15,14 +14,14 @@ function RotateAll({ pages, onChange }: { pages: GridPage[]; onChange: (pages: G
   const rotate = (by: number) => onChange(pages.map((page) => ({ ...page, rotation: page.rotation + by })));
   return (
     <div className="flex flex-wrap gap-2">
-      <Button variant="outline" onClick={() => rotate(-90)}>
-        <RotateCcwIcon data-icon="inline-start" />
+      <button type="button" className="spring inline-flex h-9 items-center gap-1.5 rounded-full bg-brand-soft px-4 text-[15px] font-medium text-brand" onClick={() => rotate(-90)}>
+        <RotateCcwIcon className="size-4" />
         {t.tool.rotateLeft}
-      </Button>
-      <Button variant="outline" onClick={() => rotate(90)}>
-        <RotateCwIcon data-icon="inline-start" />
+      </button>
+      <button type="button" className="spring inline-flex h-9 items-center gap-1.5 rounded-full bg-brand-soft px-4 text-[15px] font-medium text-brand" onClick={() => rotate(90)}>
+        <RotateCwIcon className="size-4" />
         {t.tool.rotateRight}
-      </Button>
+      </button>
     </div>
   );
 }

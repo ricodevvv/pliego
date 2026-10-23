@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Choice, Field, inputClass } from "@/components/fields";
 import { ToolShell } from "@/components/tool-shell";
-import { Button } from "@/components/ui/button";
 import { baseName, readBytes, ToolError } from "@/lib/files";
 import { canvasToBlob, openPdfjs, renderPage } from "@/lib/pdf/core";
 import { placeImage } from "@/lib/pdf/stamp";
@@ -51,7 +50,7 @@ function DrawPad({ ink, onChange }: { ink: Ink; onChange: (canvas: HTMLCanvasEle
         width={900}
         height={300}
         aria-label={t.options.signHere}
-        className="aspect-[3/1] w-full touch-none rounded-lg border bg-white"
+        className="aspect-[3/1] w-full touch-none rounded-xl border-[0.5px] bg-white"
         onPointerDown={(event) => {
           event.currentTarget.setPointerCapture(event.pointerId);
           last.current = point(event);
@@ -75,17 +74,16 @@ function DrawPad({ ink, onChange }: { ink: Ink; onChange: (canvas: HTMLCanvasEle
           onChange(canvas.current ? trim(canvas.current) : null);
         }}
       />
-      <Button
-        variant="outline"
-        size="sm"
-        className="self-start"
+      <button
+        type="button"
+        className="spring self-start rounded-full bg-brand-soft px-3.5 py-1.5 text-[15px] font-medium text-brand"
         onClick={() => {
           canvas.current?.getContext("2d")!.clearRect(0, 0, 900, 300);
           onChange(null);
         }}
       >
         {t.options.clear}
-      </Button>
+      </button>
     </div>
   );
 }
@@ -153,7 +151,7 @@ function Placer({
     image.src = signature;
   }, [signature]);
 
-  const begin = (mode: "move" | "resize") => (event: React.PointerEvent) => {
+  const begin = (mode: "move" | "resize", event: React.PointerEvent) => {
     event.stopPropagation();
     (event.target as HTMLElement).setPointerCapture(event.pointerId);
     drag.current = { mode, startX: event.clientX, startY: event.clientY, origin: placement };
@@ -172,12 +170,12 @@ function Placer({
   };
 
   return (
-    <div ref={box} className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-lg border bg-muted/40 shadow-sm" onPointerMove={move} onPointerUp={() => (drag.current = null)}>
+    <div ref={box} className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl bg-cell shadow-[0_8px_30px_rgb(0_0_0/10%)]" onPointerMove={move} onPointerUp={() => (drag.current = null)}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       {preview ? <img src={preview} alt="" className="w-full select-none" draggable={false} /> : <div className="aspect-[1/1.3] w-full animate-pulse" />}
       {preview && (
         <div
-          onPointerDown={begin("move")}
+          onPointerDown={(event) => begin("move", event)}
           className="absolute cursor-move touch-none rounded-sm outline-2 outline-dashed outline-link"
           style={{
             left: `${placement.x * 100}%`,
@@ -188,7 +186,7 @@ function Placer({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={signature} alt="" className="size-full select-none" draggable={false} />
-          <span onPointerDown={begin("resize")} className="absolute -right-2 -bottom-2 size-4 cursor-nwse-resize touch-none rounded-full border-2 border-background bg-link" />
+          <span onPointerDown={(event) => begin("resize", event)} className="absolute -right-2 -bottom-2 size-4 cursor-nwse-resize touch-none rounded-full border-2 border-background bg-link" />
         </div>
       )}
     </div>
@@ -218,7 +216,6 @@ export default function Sign({ tool }: { tool: Tool }) {
   const [ink, setInk] = useState<Ink>("blue");
   const [name, setName] = useState("");
   const [signature, setSignature] = useState<HTMLCanvasElement | null>(null);
-  const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(0);
   const [placement, setPlacement] = useState({ x: 0.55, y: 0.78, width: 0.3 });
@@ -226,19 +223,13 @@ export default function Sign({ tool }: { tool: Tool }) {
   useEffect(() => {
     if (mode !== "type") return;
     let cancelled = false;
-    if (!name.trim()) {
-      setSignature(null);
-      return;
-    }
-    typedSignature(name, ink).then((canvas) => !cancelled && setSignature(canvas));
+    (name.trim() ? typedSignature(name, ink) : Promise.resolve(null)).then((canvas) => !cancelled && setSignature(canvas));
     return () => {
       cancelled = true;
     };
   }, [mode, name, ink]);
 
-  useEffect(() => {
-    setSignatureUrl(signature ? signature.toDataURL("image/png") : null);
-  }, [signature]);
+  const signatureUrl = useMemo(() => (signature ? signature.toDataURL("image/png") : null), [signature]);
 
   return (
     <ToolShell
@@ -255,7 +246,7 @@ export default function Sign({ tool }: { tool: Tool }) {
       {([file]) => (
         <div className="flex flex-col gap-6">
           <PageCount file={file} onCount={setPages} />
-          <div className="grid gap-5 rounded-xl border bg-background p-5">
+          <div className="grid gap-5 rounded-2xl bg-cell p-5">
             <Choice
               label={t.options.mode}
               value={mode}
@@ -303,7 +294,7 @@ export default function Sign({ tool }: { tool: Tool }) {
           {signatureUrl && (
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-end justify-between gap-3">
-                <p className="text-sm text-muted-foreground">{t.options.placeSignature}</p>
+                <p className="text-[15px] text-muted-foreground">{t.options.placeSignature}</p>
                 {pages > 1 && (
                   <Field label={t.options.signPage}>
                     <select value={page} onChange={(event) => setPage(Number(event.target.value))} className={`${inputClass} w-32`}>

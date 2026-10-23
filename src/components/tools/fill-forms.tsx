@@ -57,11 +57,11 @@ function FormEditor({ file, values, onValues, onFields }: { file: File; values: 
   }, [file, onValues, onFields]);
 
   if (!fields) return <p className="text-sm text-muted-foreground">{t.tool.loading}</p>;
-  if (!fields.length) return <p className="rounded-xl border bg-muted/40 px-5 py-4 text-sm text-muted-foreground">{t.errors.noFields}</p>;
+  if (!fields.length) return <p className="rounded-2xl bg-cell px-5 py-4 text-[15px] text-muted-foreground">{t.errors.noFields}</p>;
 
   const set = (name: string, value: string | boolean) => onValues({ ...values, [name]: value });
   return (
-    <div className="grid gap-4 rounded-xl border bg-background p-5 sm:grid-cols-2">
+    <div className="grid gap-4 rounded-2xl bg-cell p-5 sm:grid-cols-2">
       {fields.map((field) =>
         field.kind === "check" ? (
           <label key={field.name} className="flex items-center gap-2 text-sm sm:col-span-2">

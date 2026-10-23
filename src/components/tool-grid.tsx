@@ -1,10 +1,12 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { ChevronRightIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { ToolIcon } from "@/components/tool-icon";
+import { CATEGORY_COLORS } from "@/lib/category-colors";
 import { CATEGORIES, TOOLS } from "@/lib/tools";
+import { cn } from "@/lib/utils";
 import { useDictionary, useLocale } from "@/lib/use-dictionary";
 
 function plain(text: string) {
@@ -20,41 +22,45 @@ export function ToolGrid() {
 
   return (
     <div>
-      <label style={{ "--delay": "480ms" } as React.CSSProperties} className="rise mx-auto flex h-12 max-w-md items-center gap-3 rounded-xl border bg-background px-4 shadow-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/30">
+      <label
+        style={{ "--delay": "300ms" } as React.CSSProperties}
+        className="rise mx-auto flex h-10 max-w-md items-center gap-2 rounded-[10px] bg-fill px-3"
+      >
         <SearchIcon className="size-4 text-muted-foreground" />
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.home.filter} aria-label={t.home.filter} className="h-full flex-1 bg-transparent outline-none" />
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={t.home.filter}
+          aria-label={t.home.filter}
+          className="h-full flex-1 bg-transparent text-[17px] outline-none placeholder:text-muted-foreground"
+        />
       </label>
-      <div className="mt-12 flex flex-col gap-12">
+      <div className="mt-10 grid gap-8 md:grid-cols-2">
         {CATEGORIES.map((category) => {
           const tools = matches.filter((tool) => tool.category === category);
           if (!tools.length) return null;
           return (
-            <section key={category}>
-              <h2 data-reveal className="mb-4 text-sm font-medium text-muted-foreground">{t.categories[category]}</h2>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {tools.map((tool, index) => (
-                  <Link
-                    key={tool.slug}
-                    href={`/${locale}/${tool.slug}`}
-                    data-reveal
-                    style={{ "--delay": `${index * 60}ms` } as React.CSSProperties}
-                    className="group flex flex-col gap-3 rounded-xl border bg-background p-5 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_12px_32px_-14px_rgb(255_90_31/35%)] transition-all duration-300"
-                  >
-                    <div className="grid size-10 place-items-center rounded-lg border bg-muted/50 transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
-                      <ToolIcon name={tool.icon} className="size-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold tracking-tight">{tool.title[locale]}</h3>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{tool.description[locale]}</p>
-                    </div>
+            <section key={category} data-reveal>
+              <h2 className="mb-1.5 px-4 text-[13px] text-muted-foreground">{t.categories[category]}</h2>
+              <div className="inset-list overflow-hidden rounded-xl bg-cell">
+                {tools.map((tool) => (
+                  <Link key={tool.slug} href={`/${locale}/${tool.slug}`} className="group flex items-center gap-3 px-4 py-2.5 transition-colors [--inset:58px] hover:bg-fill active:bg-fill">
+                    <span className={cn("grid size-[30px] shrink-0 place-items-center rounded-[7px] text-white", CATEGORY_COLORS[category])}>
+                      <ToolIcon name={tool.icon} className="size-[18px]" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[17px] leading-tight">{tool.title[locale]}</span>
+                      <span className="mt-0.5 block truncate text-[13px] text-muted-foreground">{tool.description[locale]}</span>
+                    </span>
+                    <ChevronRightIcon className="size-4 shrink-0 text-tertiary transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 ))}
               </div>
             </section>
           );
         })}
-        {!matches.length && <p className="text-center text-sm text-muted-foreground">{t.home.noResults}</p>}
       </div>
+      {!matches.length && <p className="mt-10 text-center text-[15px] text-muted-foreground">{t.home.noResults}</p>}
     </div>
   );
 }

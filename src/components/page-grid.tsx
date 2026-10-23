@@ -87,7 +87,7 @@ function PageCard({
 }) {
   const t = useDictionary();
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: page.id, disabled: !sortable });
-  const button = "grid size-7 place-items-center rounded-md bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border hover:text-foreground";
+  const button = "spring grid size-7 place-items-center rounded-full material-bar text-brand shadow-sm";
   return (
     <div
       ref={setNodeRef}
@@ -98,7 +98,7 @@ function PageCard({
         {...attributes}
         {...listeners}
         className={cn(
-          "relative grid aspect-square place-items-center overflow-hidden rounded-lg border bg-muted/40 p-3 transition-all duration-200 hover:border-brand/50",
+          "relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-cell p-3 transition-all duration-200 hover:ring-2 hover:ring-brand/40",
           sortable && "cursor-grab touch-none active:cursor-grabbing",
           page.deleted && "opacity-30",
         )}
@@ -138,7 +138,7 @@ function PageCard({
           </button>
         )}
       </div>
-      <span className="text-center text-xs text-muted-foreground tabular-nums">{position}</span>
+      <span className="text-center text-[13px] text-muted-foreground tabular-nums">{position}</span>
     </div>
   );
 }

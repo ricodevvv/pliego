@@ -19,7 +19,7 @@ function idOf(file: File) {
 function SortableRow({ file, onRemove }: { file: File; onRemove: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: idOf(file) });
   return (
-    <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} className={isDragging ? "relative z-10 opacity-80" : undefined}>
+    <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} className={isDragging ? "relative z-10 opacity-90 shadow-lg" : undefined}>
       <FileRow
         file={file}
         onRemove={onRemove}
@@ -46,12 +46,14 @@ export function SortableFiles({ files, onChange, accept }: { files: File[]; onCh
   };
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-xs text-muted-foreground">{t.tool.dragToSort}</p>
+      <p className="px-4 text-[13px] text-muted-foreground">{t.tool.dragToSort}</p>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <div className="inset-list overflow-hidden rounded-xl bg-cell [--inset:84px]">
           {files.map((file, index) => (
             <SortableRow key={idOf(file)} file={file} onRemove={() => onChange(files.filter((_, i) => i !== index))} />
           ))}
+          </div>
         </SortableContext>
       </DndContext>
       <Dropzone accept={accept} multiple compact onFiles={(more) => onChange([...files, ...more])} />
