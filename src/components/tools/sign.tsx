@@ -92,7 +92,7 @@ function DrawPad({ ink, onChange }: { ink: Ink; onChange: (canvas: HTMLCanvasEle
 
 async function typedSignature(name: string, ink: Ink) {
   const family = getComputedStyle(document.body).getPropertyValue("--font-signature").trim() || "cursive";
-  await document.fonts.load(`96px ${family}`);
+  await document.fonts.load(`96px ${family.split(",")[0]}`).catch(() => undefined);
   const canvas = document.createElement("canvas");
   canvas.width = 1400;
   canvas.height = 300;
